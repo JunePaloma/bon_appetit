@@ -32,19 +32,20 @@ class Pantry
     i.each do |ingredient, amount|
         measurement_hash = {}
       if amount <= 1
-        amount = amount *1000.to_i
-        measurement_hash["quantity"] = amount
-        measurement_hash["units"] = "Milli-Units"
+        amount = (amount *1000).to_i
+        measurement_hash[:quantity] = amount
+        measurement_hash[:units] = "Milli-Units"
       elsif amount >= 100
-          amount = amount/5
-          measurement_hash["quantity"] = amount
-          measurement_hash["units"] = "Centi-Units"
+          amount = amount/100
+          measurement_hash[:quantity] = amount
+          measurement_hash[:units] = "Centi-Units"
       else
-        measurement_hash["quantity"] = amount
-        measurement_hash["units"] = "Universal-Units"
+        measurement_hash[:quantity] = amount
+        measurement_hash[:units] = "Universal-Units"
       end
       new_i_hash[ingredient] = measurement_hash
     end
+    new_i_hash
 end
 
 end
