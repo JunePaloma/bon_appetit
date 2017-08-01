@@ -2,10 +2,11 @@ require "./lib/recipe"
 require 'pry'
 class Pantry
 
-  attr_reader :stock
+  attr_reader :stock, :cookbook
 
   def initialize
     @stock = {}
+    @cookbook = []
   end
 
   def stock_check(item) #maybe refactor using find
@@ -46,11 +47,56 @@ class Pantry
       new_i_hash[ingredient] = measurement_hash
     end
     new_i_hash
-end
+  end
+
+  def add_to_cookbook(recipe)
+    @cookbook << recipe
+  end
+
+  def what_can_i_make
+    possible_recipes = []
+
+      @cookbook.each do |recipe|
+        ingredients_i_have = []
+        recipe_ingredients = recipe.ingredients.keys
+          recipe.ingredients.each do |ingredient, amount|
+            @stock.each do |in_pantry, stocked_amount|
+              if ingredient == in_pantry && stocked_amount >= amount
+                ingredients_i_have << ingredient
+              end
+            end
+          end
+          if ingredients_i_have.length == recipe_ingredients.length
+          possible_recipes << recipe.name
+        end
+      end
+    possible_recipes
+  end
+  #
+  #
+  #     ingredients.each do |ingredient|
+  #       available.each do |in_pantry|
+  #         if ingredient == inpantry
+  #
+  #     @stock.each do |ingredient_in_pantry|
+  #       ingredients.each do |ingredient|
+  #         if
+  #
+  #
+  #
+  #     ingredients << recipe.
+  #     @stock.each do |ingredient|
+  #       if recipe.ingredient
+  #
+  #     end
+  #   end
+  #
+  # binding.pry
+  #   # iterate over stock
+  #   # iterate over cookbook.ingredients  if the key  matches the ingredients and the value is greater than or equal to the quantity, return that recipe
+  #
+  # end
+
+
 
 end
-
-    # key is the ingredient, value is a hash {quantity => num, units =>numb}
-    # iterate over the outer hash first, then iterate over the inner hash
-  #   If the recipe calls for more than 100 Units of an ingredient, convert it to Centi-units
-  #  If the recipe calls for less than 1 Units of an ingredient, convert it to Milli-units
