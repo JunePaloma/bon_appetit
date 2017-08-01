@@ -55,10 +55,9 @@ class Pantry
 
   def what_can_i_make
     possible_recipes = []
-
       @cookbook.each do |recipe|
         ingredients_i_have = []
-        recipe_ingredients = recipe.ingredients.keys
+        recipe_ingredients = recipe.ingredients
           recipe.ingredients.each do |ingredient, amount|
             @stock.each do |in_pantry, stocked_amount|
               if ingredient == in_pantry && stocked_amount >= amount
@@ -72,31 +71,36 @@ class Pantry
       end
     possible_recipes
   end
-  #
-  #
-  #     ingredients.each do |ingredient|
-  #       available.each do |in_pantry|
-  #         if ingredient == inpantry
-  #
-  #     @stock.each do |ingredient_in_pantry|
-  #       ingredients.each do |ingredient|
-  #         if
-  #
-  #
-  #
-  #     ingredients << recipe.
-  #     @stock.each do |ingredient|
-  #       if recipe.ingredient
-  #
-  #     end
-  #   end
-  #
-  # binding.pry
-  #   # iterate over stock
-  #   # iterate over cookbook.ingredients  if the key  matches the ingredients and the value is greater than or equal to the quantity, return that recipe
-  #
-  # end
 
+  def how_many_can_i_make
+    recipes = get_recipe_objs
+    recipe_hash = Hash.new 0
+    recipes.each do |recipe_obj|
+      ingredients_i_have_enough_of = {}
+      recipe_obj.ingredients.each do |ingredient, amount|
+          @stock.each do |stocked_item, stocked_quantity|
+            if stocked_item == ingredient
+              ingredients_i_have_enough_of [stocked_item] =(stocked_quantity/amount).to_i
+            end
+          end
+    
+      ingredients_i_have_enough_of #I'll have a hash with the ingredients I have, I need to find the lowest value from the key value pairs, that will be the amount of the recipe I can make. Then I add the recipe name, and that low value to the the recipe hash.
+      end
+    # returns a hash with recipe name and the quantity I can make
+    end
+  end
 
+  def get_recipe_objs
+    possible_recipes = what_can_i_make
+    recipe_arr = []
+    @cookbook.each do |recipe_obj|
+      possible_recipes.each do |recipe_name|
+        if recipe_name == recipe_obj.name
+          recipe_arr << recipe_obj
+        end
+      end
+    end
+    recipe_arr
+  end
 
 end
